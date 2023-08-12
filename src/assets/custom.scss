@@ -1,0 +1,129 @@
+// Sobrescrever as variáveis de cores do Bootstrap
+$primary: #1294DD;
+$primary-darker: #061D97;
+$secondary: #FFC700;
+$secondary-darker: #FF7A00;
+$light: #FFF;
+$grey: #D9D9D9;
+
+// Switch
+$form-switch-color: $secondary;
+$form-switch-focus-color: $secondary;
+$form-switch-checked-color: $primary;
+
+// Sombra
+$box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+
+// Importar o arquivo de estilos do Bootstrap
+@import '~bootstrap/scss/bootstrap.scss';
+
+.h-full {
+    min-height: 100vh;
+}
+
+#app {
+    background: linear-gradient(180deg, $primary 0%, $primary-darker 100%)
+}
+
+.form-control {
+    min-height: 3.5rem !important;
+}
+
+.form-switch {
+    .form-check-input {
+        background-color: $light;
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 1.5rem;
+    .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $grey;
+        border-radius: 2rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        &:before {
+            position: absolute;
+            content: "";
+            height: 2rem;
+            width: 2rem;
+            left: 0;
+            bottom: -0.25rem;
+            background-color: $light;
+            border-radius: 50%;
+            border: .25rem solid $grey;
+            box-shadow: $box-shadow;
+            transition: transform 0.3s;
+        }
+    }
+    input {
+        display: none;
+        &:checked + .slider {
+            background-color: $secondary;
+        }  
+        &:checked + .slider:before {
+            transform: translateX(1rem);
+            border-color: $secondary;
+        }
+    }
+}
+
+.option-description {
+    width: 100%;
+    color: $light;
+}
+
+.btn-secondary-gradient {
+    background: linear-gradient(90deg, $secondary 0, $secondary-darker 100%);
+    background-color: $secondary;
+    transition: all ease 0.8s;
+    &:hover {
+        background: $secondary-darker;
+    }
+}
+  
+.analysis-result {
+    border-radius: 2rem;
+    height: 100%;
+    min-height: 9rem !important;
+}
+
+.tip-wrapper {
+    position: relative;;
+    text-decoration: none;
+    width: 50%;
+    margin-left: 1.5rem;
+    .btn-tip {
+        height: 1.75rem;
+        width: 1.75rem;
+        font-size: 0.75rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .tip {
+        position: absolute;
+        top: 50%;
+        left: 2.5rem;
+        transform: translateY(-50%);
+        color: $light;
+        display: none;
+    }
+    &:hover {
+        .tip {
+            display: inline-block;
+        }
+    }
+    @media (max-width: 1024px) {
+        display: none        
+    }
+}
