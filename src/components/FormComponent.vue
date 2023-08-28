@@ -9,25 +9,26 @@
                                 type="text"
                                 class="form-control border border-secondary rounded-pill text-primary fw-bold px-4"
                                 id="docs-id"
-                                placeholder="ID do docs"
-                                v-model="form.documentId"
+                                placeholder="Url do docs"
+                                v-model="form.url"
+                                :disabled="loading"
                             >
-                            <label for="docs-id" class="text-primary fw-bold ps-4">ID do docs</label>
+                            <label for="docs-id" class="text-primary fw-bold ps-4">Url do docs</label>
                         </div>
                         <div class="d-flex align-items-center mt-lg-5 mt-4 mb-3">
                             <label class="switch">
-                                <input type="checkbox" v-model="form.options.validateSummary">
+                                <input type="checkbox" v-model="form.options.validateSummary" :disabled="loading">
                                 <span class="slider"></span>
                             </label>
                             <span class="ms-4 text-light">Validar resumo</span>
                             <a href="#" class="tip-wrapper" @click="handleClick">
                                 <div class="btn btn-dark btn-tip rounded-circle">?</div>
-                                <span class="tip">Verifica se a seção de resumo está alinhada com os tópicos discutidos no restante do artigo</span>
+                                <span class="tip">Valida se a seção de resumo está alinhada com os tópicos discutidos no restante do artigo</span>
                             </a>
                         </div>
                         <div class="d-flex align-items-center mt-lg-5 mt-4 mb-3">
                             <label class="switch">
-                                <input type="checkbox" v-model="form.options.findKeywords">
+                                <input type="checkbox" v-model="form.options.findKeywords" :disabled="loading">
                                 <span class="slider"></span>
                             </label>
                             <span class="ms-4 text-light">Identificar palavras chave</span>
@@ -38,18 +39,23 @@
                         </div>
                         <div class="d-flex align-items-center mt-lg-5 mt-4 mb-3">
                             <label class="switch">
-                                <input type="checkbox" v-model="form.options.checkReferences">
+                                <input type="checkbox" v-model="form.options.checkReferences" :disabled="loading">
                                 <span class="slider"></span>
                             </label>
-                            <span class="ms-4 text-light">Verificar citações</span>
+                            <span class="ms-4 text-light">Validar citações</span>
                             <a href="#" class="tip-wrapper" @click="handleClick">
                                 <div class="btn btn-dark btn-tip rounded-circle">?</div>
                                 <span class="tip">Valida se as citações presentes no texto possuem as respectivas referências</span>
                             </a>
                         </div>
                         <div class="mt-lg-5 mt-4">
-                            <button type="submit" class="btn btn-secondary-gradient w-100 rounded-pill fw-bold text-light px-4 py-3">
+                            <button
+                                type="submit"
+                                class="btn btn-secondary-gradient w-100 rounded-pill fw-bold text-light px-4 py-3"
+                                :disabled="loading"
+                            >
                                 {{ loading ? 'Aguarde...' : 'Verificar' }}
+                                <img src="../assets/spinner.svg" id="spinner" v-show="loading">
                             </button>
                         </div>
                     </form>
@@ -57,7 +63,9 @@
                 <div class="col-md mb-5">
                     <div class="analysis-result form-control border border-secondary text-primary fw-bold px-4">
                         <p>Análise:</p>
-                        <p v-if="resultDefault">{{ resultDefault }}</p>
+                        <p v-for="(paragraph, index) in resultDefault" :key="index">
+                            {{ paragraph }}
+                        </p>
                         <p v-if="resultSummary">{{ resultSummary }}</p>
                         <p v-if="resultKeywords">{{ resultKeywords }}</p>
                     </div>
@@ -74,14 +82,14 @@
         data() {
             return {
                 form: {
-                    documentId: '',
+                    url: '',
                     options: {
                         validateSummary: false,
                         findKeywords: false,
                         checkReferences: false
                     }
                 },
-                resultDefault: '',
+                resultDefault: [],
                 resultSummary: '',
                 resultKeywords: '',
                 loading: false,
@@ -92,8 +100,12 @@
             fetchGeneratedText() {
                 this.loading = true; // Indica que a requisição está em andamento
 
+                this.resultDefault = [];
+                this.resultSummary = '';
+                this.resultKeywords = '';
+
                 const payload = {
-                    id: this.form.documentId,
+                    url: this.form.url,
                     options: {
                         validateSummary: this.form.options.validateSummary,
                         findKeywords: this.form.options.findKeywords,
@@ -121,7 +133,8 @@
 
             handleClick(event) {
                 event.preventDefault();
-            }
-        }
+            },
+        },
+
     }
 </script>
