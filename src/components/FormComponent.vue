@@ -55,7 +55,7 @@
                                 :disabled="loading"
                             >
                                 {{ loading ? 'Aguarde...' : 'Verificar' }}
-                                <img src="../assets/spinner.svg" id="spinner" v-show="loading">
+                                <img src="../assets/spinner.svg" id="spinner" alt="" v-show="loading">
                             </button>
                         </div>
                     </form>
