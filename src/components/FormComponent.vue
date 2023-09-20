@@ -20,10 +20,10 @@
                                 <input type="checkbox" v-model="form.options.validateSummary" :disabled="loading">
                                 <span class="slider"></span>
                             </label>
-                            <span class="ms-4 text-light">Validar resumo</span>
+                            <span class="ms-4 text-light">Criar resumo</span>
                             <a href="#" class="tip-wrapper" @click="handleClick">
                                 <div class="btn btn-dark btn-tip rounded-circle">?</div>
-                                <span class="tip">Valida se a seção de resumo está alinhada com os tópicos discutidos no restante do artigo</span>
+                                <span class="tip">Extrai um breve resumo do texto</span>
                             </a>
                         </div>
                         <div class="d-flex align-items-center mt-lg-5 mt-4 mb-3">
@@ -42,10 +42,10 @@
                                 <input type="checkbox" v-model="form.options.checkReferences" :disabled="loading">
                                 <span class="slider"></span>
                             </label>
-                            <span class="ms-4 text-light">Validar citações</span>
+                            <span class="ms-4 text-light">Sugerir melhorias</span>
                             <a href="#" class="tip-wrapper" @click="handleClick">
                                 <div class="btn btn-dark btn-tip rounded-circle">?</div>
-                                <span class="tip">Valida se as citações presentes no texto possuem as respectivas referências</span>
+                                <span class="tip">Indica pontos de possível melhoria no texto.</span>
                             </a>
                         </div>
                         <div class="mt-lg-5 mt-4">
@@ -62,12 +62,12 @@
                 </div>
                 <div class="col-md mb-5">
                     <div class="analysis-result form-control border border-secondary text-primary fw-bold px-4">
-                        <p>Análise:</p>
-                        <p v-for="(paragraph, index) in resultDefault" :key="index">
-                            {{ paragraph }}
-                        </p>
-                        <p v-if="resultSummary">{{ resultSummary }}</p>
-                        <p v-if="resultKeywords">{{ resultKeywords }}</p>
+                        <div class="analysis-content">
+                            <p>Análise:</p>
+                            <p v-for="(paragraph, index) in resultDefault" :key="index">
+                                {{ paragraph }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,12 +86,10 @@
                     options: {
                         validateSummary: false,
                         findKeywords: false,
-                        checkReferences: false
+                        improvementSuggestions: false
                     }
                 },
                 resultDefault: [],
-                resultSummary: '',
-                resultKeywords: '',
                 loading: false,
             }
         },
@@ -101,24 +99,21 @@
                 this.loading = true; // Indica que a requisição está em andamento
 
                 this.resultDefault = [];
-                this.resultSummary = '';
-                this.resultKeywords = '';
 
                 const payload = {
                     url: this.form.url,
                     options: {
                         validateSummary: this.form.options.validateSummary,
                         findKeywords: this.form.options.findKeywords,
-                        checkReferences: this.form.options.checkReferences
+                        improvementSuggestions: this.form.options.improvementSuggestions
                     }
                 };
 
                 this.$http
-                    .post('http://localhost:3000/document', payload)
+                    .post('http://localhost:3000/api/document', payload)
                     .then((response) => {
-                        this.resultDefault = response.data.analysis;
-                        this.resultSummary = response.data.summary;
-                        this.resultKeywords = response.data.keywords;
+                        this.resultDefault = response.data;
+                        
                     })
                     .catch((error) => {
                         // Exibe a mensagem de erro padrão para outros erros
