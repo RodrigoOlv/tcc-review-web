@@ -67,6 +67,7 @@
                             <p v-for="(paragraph, index) in resultDefault" :key="index">
                                 {{ paragraph }}
                             </p>
+                            <p v-if="showErrorMessage">Erro ao buscar texto gerado. Verifique sua conexão e tente novamente.</p>
                         </div>
                     </div>
                 </div>
@@ -90,6 +91,7 @@
                     }
                 },
                 resultDefault: [],
+                showErrorMessage: false,
                 loading: false,
             }
         },
@@ -116,9 +118,8 @@
                         
                     })
                     .catch((error) => {
-                        // Exibe a mensagem de erro padrão para outros erros
-                        this.resultDefault = 'Erro ao buscar texto gerado. Verifique sua conexão e tente novamente.';
-                        
+                        this.showErrorMessage = true;
+
                         console.log('Erro ao buscar texto gerado:', error);
                     })
                     .finally(() => {
