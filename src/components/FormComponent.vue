@@ -50,6 +50,7 @@
                         </div>
                         <div class="mt-lg-5 mt-4">
                             <button
+                                id="btn-submit"
                                 type="submit"
                                 class="btn btn-secondary-gradient w-100 rounded-pill fw-bold text-light px-4 py-3"
                                 :disabled="loading"
@@ -64,10 +65,10 @@
                     <div class="analysis-result form-control border border-secondary text-primary fw-bold px-4">
                         <div class="analysis-content">
                             <p>Análise:</p>
-                            <p v-for="(paragraph, index) in resultDefault" :key="index">
+                            <p v-for="(paragraph, index) in resultDefault" :key="index" class="results">
                                 {{ paragraph }}
                             </p>
-                            <p v-if="showErrorMessage">Erro ao buscar texto gerado. Verifique sua conexão e tente novamente.</p>
+                            <p v-if="showErrorMessage" class="error-message">Erro ao buscar texto gerado. Verifique sua conexão e tente novamente.</p>
                         </div>
                     </div>
                 </div>
