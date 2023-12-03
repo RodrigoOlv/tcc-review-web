@@ -6,7 +6,16 @@
             </a>
             
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- TO DO -->
+                <div class="w-100 d-flex justify-content-end">
+                    <button
+                        type="button"
+                        class="btn btn-secondary-gradient rounded-pill fw-bold text-light px-4 py-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#help-modal"
+                    >
+                        Ajuda
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
